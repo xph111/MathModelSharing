@@ -1,48 +1,50 @@
 # ☁️ MathModelSharing — 团队跨模型云端共享工作区
 
 - **云端仓库主页**：https://github.com/xph111/MathModelSharing
-- **云端共享文件夹直达链接**：https://github.com/xph111/MathModelSharing/tree/main/shared_files
+- **云端共享文件夹直达**：https://github.com/xph111/MathModelSharing/tree/main/shared_files
+- **极简索引清单（模型首选读取入口）**：https://github.com/xph111/MathModelSharing/blob/main/shared_files/MANIFEST.md
 - **云端网页版 VS Code（免安装在线管理）**：https://github.dev/xph111/MathModelSharing
 
-本仓库将所有共享文件（压缩包 `.zip`、数据表 `.csv`/`.xlsx`、代码、文档、图表）直接存储在云端 [`shared_files/`](https://github.com/xph111/MathModelSharing/tree/main/shared_files) 目录下，确保**任何大模型 / Agent 均可直接联网读取真实文件**，你和队友也可随时在网页手动上传和下载。
+本仓库专为**数学建模团队跨 AI 模型（Antigravity / Devin / Codex / DeepSeek / ChatGPT）及跨设备协同**设计。
 
 ---
 
-## 🖐️ 一、你和队友如何手动在云端上传 / 下载文件？
+## ⚡ 核心规范：极简 Token 与按需读取协议（防止爆 Context 额度）
 
-无需安装任何软件，直接打开浏览器访问 **[shared_files 云端文件夹](https://github.com/xph111/MathModelSharing/tree/main/shared_files)**：
+为了防止大模型过度加载无关文件、频繁通读大压缩包而迅速耗尽 Context 额度，团队制定了**两阶段外科手术式读取与写入规范**：
 
-1. **手动上传文件或压缩包到云端**：
-   - 打开 https://github.com/xph111/MathModelSharing/upload/main/shared_files （或在 `shared_files` 页面点击右上角 **`Add file` $\rightarrow$ `Upload files`**）。
-   - 直接把 `.zip` 压缩包、数据集或代码拖入网页窗口。
-   - 点击底部绿色按钮 **`Commit changes`**，文件即刻保存在云端！
-2. **手动从云端下载文件**：
-   - **下载单个文件/压缩包**：在 `shared_files` 中点开对应文件，点击右侧 **`Download raw file`**（下载图标）即可。
-   - **打包下载全部云端文件**：直接访问或点击 https://github.com/xph111/MathModelSharing/archive/refs/heads/main.zip 即可一键下载整个云端库压缩包。
-3. **在线文件夹视图（推荐）**：
-   - 直接打开 **https://github.dev/xph111/MathModelSharing**（或在 GitHub 页面按键盘上的 `.` 键），浏览器会直接打开云端 VS Code，可直接在左侧文件树中右键下载、拖拽上传或在线查看/编辑文件。
+### 1. 🤖 模型阅读规范（两阶段按需检索，严禁盲目全量通读）
+- **第一阶段（轻量索引）**：任何 Agent / 大模型介入时，**只允许先读取 [`shared_files/MANIFEST.md`](https://github.com/xph111/MathModelSharing/blob/main/shared_files/MANIFEST.md)**（该文件仅几十行，耗费 Token 极低）。
+- **第二阶段（按需切片加载）**：通过清单中的【核心用途与内容摘要】确认需要的目标文件后，**仅单点读取该具体文件**；如无必要，严禁全量 dump 整个目录。
 
----
+### 2. ✍️ 写入与分类规范（每次上传必须分类归档并登记）
+所有文件严禁直接散乱丢在根目录，必须按以下 5 类结构存放，且**上传后必须在 `shared_files/MANIFEST.md` 中登记 1 行摘要**：
 
-## 🤖 二、各家大模型 / Agent 如何直接读取云端文件？
+| 文件夹目录 | 存放内容与分类要求 |
+| :--- | :--- |
+| **`shared_files/01_raw_data/`** | 赛题原始附件、数据压缩包（`.zip`/`.rar`/`.7z`，只读归档） |
+| **`shared_files/02_processed_data/`** | 清洗、去噪、特征工程后的干净数据集（`.csv`/`.parquet`/`.npy`） |
+| **`shared_files/03_code_scripts/`** | 各小问的核心求解代码、算法模型与数据处理脚本（`.py`/`.m`/`.ipynb`） |
+| **`shared_files/04_results_figures/`** | 模型输出的对比图表、指标评估表（`.png`/`.pdf`/`.xlsx`） |
+| **`shared_files/05_paper_docs/`** | 论文片段、LaTeX 源码、公式推导、最终排版文档（`.tex`/`.docx`/`.md`） |
 
-所有文件均以**真实文件（非 LFS 指针）**保存在云端，任何 Agent 都能直接读取：
-
-1. **ChatGPT（Plus / Team / Pro / 桌面版）**：
-   - **方式 A（原生绑定）**：在输入框点击 **`+` $\rightarrow$ `Connect to GitHub`**，授权选择 `xph111/MathModelSharing`，ChatGPT 即可直接读取 `shared_files/` 中的所有数据和代码。
-   - **方式 B（联网直读）**：如果仓库设为 Public，直接把云端文件链接发给 GPT，或发送 `https://gitingest.com/xph111/MathModelSharing` 让其直接联网读取全库内容。
-2. **Devin（云端 Agent）**：
-   - 在 Devin 中绑定 `xph111/MathModelSharing` 仓库，直接发指令：*“读取 `shared_files/` 下的最新压缩包/数据并处理，完成后将结果 push 回 `shared_files/`”*。
-3. **Antigravity（本地 Agent）**：
-   - 直接在 Antigravity 中说：*“从 `https://github.com/xph111/MathModelSharing` 拉取最新文件并处理，做完后推送到云端”*，Agent 会自动执行 `git pull` 与 `git push`。
-4. **DeepSeek / 其他模型**：
-   - 若使用网页版 DeepSeek：队友点击上方[一键打包下载链接](https://github.com/xph111/MathModelSharing/archive/refs/heads/main.zip)或单文件下载后拖入对话框；或者直接把 `https://uithub.com/xph111/MathModelSharing` / `https://gitingest.com/xph111/MathModelSharing` 的汇总内容发给 DeepSeek。
+> **登记格式**：在 [`shared_files/MANIFEST.md`](https://github.com/xph111/MathModelSharing/blob/main/shared_files/MANIFEST.md) 末尾追加：
+> `| 路径 | 分类 | 作者/模型 | 大小 | 核心用途与摘要(30字内) | 依赖关系 |`
 
 ---
 
-## 💻 三、本地电脑一键同步脚本（可选）
+## 🖐️ 手动在云端网页上传 / 下载方法
 
-如果把本仓库克隆到了电脑本地（[`d:/中大资料/20_AI/Antigravity/SharedCloudRepo`](file:///d:/中大资料/20_AI/Antigravity/SharedCloudRepo)），可直接双击根目录脚本与云端同步：
-- **`2_一键从云端下载最新文件_Pull.bat`**：将云端 `shared_files/` 的最新文件同步到本地。
-- **`3_一键上传本地文件到云端_Push.bat`**：将本地 `shared_files/` 的修改一键推送到云端。
-- **`4_开启后台实时双向自动同步_AutoSync.bat`**：每 30 秒自动与云端双向同步。
+- **上传新文件/压缩包**：打开对应分类子文件夹（如 `01_raw_data`） $\rightarrow$ 点击右上角 **`Add file` $\rightarrow$ `Upload files`** 拖拽上传。
+- **单个文件下载**：点击文件名 $\rightarrow$ 点击右侧 **`Download raw file`** 图标。
+- **整库打包下载**：直接访问 https://github.com/xph111/MathModelSharing/archive/refs/heads/main.zip 。
+
+---
+
+## 🤖 给各家大模型 / Agent 的配置指令
+
+将以下指令复制给 **Codex / DeepSeek / Devin / ChatGPT**：
+
+> “你已接入团队云端共享库 `https://github.com/xph111/MathModelSharing.git`：
+> 1. **阅读约束**：绝不要自动遍历通读整个仓库。当需要了解共享文件时，**优先只读取 `shared_files/MANIFEST.md` 清单**，确认目标文件后再按需拉取具体文件，严格控制 Token 消耗。
+> 2. **写入约束**：生成重要代码、数据或成果时，必须将文件分类存放至 `shared_files/` 的对应子目录（`01_raw_data/` ~ `05_paper_docs/`），并在 `shared_files/MANIFEST.md` 中追加一行说明该文件的核心用途与摘要。”
