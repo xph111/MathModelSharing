@@ -48,3 +48,15 @@
 > “你已接入团队云端共享库 `https://github.com/xph111/MathModelSharing.git`：
 > 1. **阅读约束**：绝不要自动遍历通读整个仓库。当需要了解共享文件时，**优先只读取 `shared_files/MANIFEST.md` 清单**，确认目标文件后再按需拉取具体文件，严格控制 Token 消耗。
 > 2. **写入约束**：生成重要代码、数据或成果时，必须将文件分类存放至 `shared_files/` 的对应子目录（`01_raw_data/` ~ `05_paper_docs/`），并在 `shared_files/MANIFEST.md` 中追加一行说明该文件的核心用途与摘要。”
+
+## Codex 按需调用
+
+在仓库的 GitHub **Issues** 中新建或打开一个任务 Issue，然后发表评论：
+
+```text
+/codex 请按需读取 shared_files/MANIFEST.md 中对应的文件，并总结主要结论。
+```
+
+工作流只响应有仓库写入权限的成员在普通 Issue 中发出的 `/codex ` 指令。Codex 会先读取 `shared_files/MANIFEST.md`，再按任务读取相关文件；默认只读分析，并将结果回复在同一 Issue。上传文件本身不会触发模型调用，也不会自动改写或提交文件。
+
+首次启用前，请在 GitHub 仓库 **Settings → Secrets and variables → Actions** 中添加名为 `OPENAI_API_KEY` 的 Repository secret。该工作流通过 OpenAI API 调用 Codex；API 用量与 ChatGPT 订阅分别计费。
