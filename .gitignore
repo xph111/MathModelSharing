@@ -1,0 +1,10 @@
+# 仅忽略系统临时垃圾文件与 Office 锁文件，保留所有数据、压缩包与结果文件以便云端共享
+.DS_Store
+Thumbs.db
+desktop.ini
+~$*
+*.tmp
+__pycache__/
+.ipynb_checkpoints/
+.venv/
+venv/
